@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     let modelViewObj = ApiCallViewModel.sharedInstance
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
         self.movieCollectionView.register(UINib(nibName: "UnPopularCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "UnPopularCollectionViewCell")
         self.movieCollectionView.register(UINib(nibName: "PopularCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PopularCollectionViewCell")
         
