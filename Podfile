@@ -11,6 +11,7 @@ target 'SmartApp' do
   target 'SmartAppTests' do
     inherit! :search_paths
     # Pods for testing
+    # Pods for testing
   end
 
   target 'SmartAppUITests' do
