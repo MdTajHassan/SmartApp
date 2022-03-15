@@ -44,17 +44,15 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellUnpopular = collectionView.dequeueReusableCell(withReuseIdentifier: "UnPopularCollectionViewCell", for: indexPath) as! UnPopularCollectionViewCell
+        cellUnpopular.delegate = self
         let cellPopular = collectionView.dequeueReusableCell(withReuseIdentifier: "PopularCollectionViewCell", for: indexPath) as! PopularCollectionViewCell
+        cellPopular.delegate = self
         let resultData = modelViewObj.filteredResultsArray[indexPath.row]
         if resultData.voteAverage < 7 {
             cellUnpopular.cellPreparationForUnpopularMovie(data: resultData)
-            cellUnpopular.BtnDelete.tag = indexPath.row
-            cellUnpopular.BtnDelete.addTarget(self, action: #selector(deleteRow(sender:)), for: .touchUpInside)
             return cellUnpopular
         } else {
             cellPopular.cellPreparationForPopularMovie(data: resultData)
-            cellPopular.BtnDeletePop.tag = indexPath.row
-            cellPopular.BtnDeletePop.addTarget(self, action: #selector(deleteRow(sender:)), for: .touchUpInside)
             return cellPopular
         }
     }
@@ -64,12 +62,21 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource {
         VC.posterPath = modelViewObj.filteredResultsArray[indexPath.row].posterPath
         navigationController?.pushViewController(VC, animated: true)
     }
-    
-    @objc func deleteRow(sender: UIButton) {
-        let indexPath = IndexPath(item: sender.tag, section: 0)
-        modelViewObj.filteredResultsArray.remove(at: indexPath.row)
-        //        movieCollectionView.deleteItems(at: [indexPath]) //this need to check
-        movieCollectionView.reloadData()
-    }
 }
 
+// MARK: - Cell Delete Delegate
+extension ViewController:DeleteUnPopularCellDelegate,DeletePopularCellDelegate {
+    func deleteUnPopular(cell: UnPopularCollectionViewCell) {
+        if let indexPath = movieCollectionView.indexPath(for: cell) {
+            modelViewObj.filteredResultsArray.remove(at: indexPath.item)
+            movieCollectionView.deleteItems(at: [indexPath])
+        }
+    }
+    
+    func deletePopular(cell: PopularCollectionViewCell) {
+        if let indexPath = movieCollectionView.indexPath(for: cell) {
+            modelViewObj.filteredResultsArray.remove(at: indexPath.item)
+            movieCollectionView.deleteItems(at: [indexPath])
+        }
+    }
+}

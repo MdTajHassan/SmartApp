@@ -7,10 +7,17 @@
 
 import UIKit
 
+protocol  DeletePopularCellDelegate {
+func deletePopular(cell:PopularCollectionViewCell)
+}
+
 class PopularCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imagePopular: UIImageView!
     @IBOutlet weak var BtnDeletePop: UIButton!
+    
+     var delegate: DeletePopularCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -21,4 +28,7 @@ class PopularCollectionViewCell: UICollectionViewCell {
         imagePopular.downloadImage(url: url)
     }
 
+    @IBAction func onClickPopularDelete(_ sender: Any) {
+        delegate?.deletePopular(cell: self)
+    }
 }

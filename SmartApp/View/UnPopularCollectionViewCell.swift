@@ -7,12 +7,19 @@
 
 import UIKit
 
+protocol DeleteUnPopularCellDelegate {
+func deleteUnPopular(cell:UnPopularCollectionViewCell)
+}
+
 class UnPopularCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageUnpopular: UIImageView!
     @IBOutlet weak var lblUnpopularTitle: UILabel!
     @IBOutlet weak var lblUnpopularOverview: UILabel!
     @IBOutlet weak var BtnDelete: UIButton!
+    
+    var delegate: DeleteUnPopularCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -23,5 +30,8 @@ class UnPopularCollectionViewCell: UICollectionViewCell {
         lblUnpopularTitle.text = data.title
         lblUnpopularOverview.text = data.overview
         imageUnpopular.downloadImage(url: url)
+    }
+    @IBAction func onClickDeleteUnpopular(_ sender: Any) {
+        delegate?.deleteUnPopular(cell: self)
     }
 }
